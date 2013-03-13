@@ -14,6 +14,7 @@ unsigned char far * video_mode   = (unsigned char far *) 0x00000449;
 unsigned char far * timer_ticks  = (unsigned char far *) 0x0000046C;
 
 void _320_200_256 () // inizializza grafica a 320x200x256 colori.
+//initializes graphics 320x200x256 colors.
 {
 	asm {
 		push ax
@@ -234,21 +235,36 @@ vga_X376Y564 label word
   dw      564     ; height
 */
 
-/* Le seguenti tabelle sono una collezione di modalitÖ video
+/* Le seguenti tabelle sono una collezione di modalit¬Ö video
    derivate dalla normale MCGA, altrimenti note come ModeX.
    Le tabelle sono pronte per essere passate alla funzione
    "tweakedVGA" per ottenere stili di visualizzazione diversi
    dallo standard MCGA, il quale sarebbe descritto come
-   "Chained NTSC screen: 320x200", ma che non ä incluso perchÇ
-   ä sufficiente aprire la normale modalitÖ MCGA per ottenerlo...
- - Una modalitÖ interessante ä la tabella "X320Y200C4YPAL",
+   "Chained NTSC screen: 320x200", ma che non ¬ä incluso perch¬Ç
+   ¬ä sufficiente aprire la normale modalit¬Ö MCGA per ottenerlo...
+ - Una modalit¬Ö interessante ¬ä la tabella "X320Y200C4YPAL",
    che corregge il fastidioso rapporto d'aspetto "allungato"
    dovuto all'incongruenza fra gli standard PAL (256 linee)
    ed NTSC (200 linee), che rende i pixels non del tutto quadrati.
- - Per le modalitÖ "unchained", bisogna procedere selezionando
-   le bit-planes su cui operare prima di disegnare quattro o pió
+ - Per le modalit¬Ö "unchained", bisogna procedere selezionando
+   le bit-planes su cui operare prima di disegnare quattro o pi¬ó
    pixels consecutivi. E' opportuno quindi disegnare per colonne. */
 
+/* The following tables are a collection of modes? video
+    derived from normal MCGA, otherwise known as Modex.
+    The tables are ready to be passed to the function
+    "tweakedVGA" to get different visual styles
+    the standard MCGA, which would be described as
+    "Chained screen NTSC: 320x200", but that does not? included because?
+    ?? Simply open the normal mode? MCGA to obtain ...
+  - A mode? interesting? the table "X320Y200C4YPAL"
+    that fixes the annoying aspect ratio "stretched"
+    due to inconsistency between standards PAL (256 lines)
+    and NTSC (200 lines), which makes the pixels not entirely square.
+  - For mode? "unchained", you must do so by selecting
+    the bit-planes to operate before drawing four or more?
+    consecutive pixels. E 'therefore necessary to draw columns. */
+    
 unsigned X320Y200C4NNTS[5] = { /* Unchained NTSC screen: 320x200 */
 	0x0001,	// Chain4 OFF
 	0x00E3,	// Dot Clock
@@ -265,6 +281,7 @@ unsigned X320Y200C4YPAL[4] = { /* Chained PAL screen: 320x200 */
 };
 
 void tweakedVGA (unsigned *regtable) // Inizializza grafica MCGA-X.
+// Initialize MCGA graphics-X.
 {
 	// === Sequencer Registers ===
 
@@ -323,6 +340,7 @@ ParamLoop:asm {	mov	ax, word ptr [bx+si]	// Load+Out index/data
 }
 
 void initgraph (unsigned char modo) // inizializza grafica boh?.
+//initializes graphics boh?.
 {
 	asm {
 		push ax
@@ -334,6 +352,7 @@ void initgraph (unsigned char modo) // inizializza grafica boh?.
 }
 
 void vesa_640_480_256 () // inizializza grafica a 640x480x256 colori, vesa.
+//initializes graphics 640x480x256 colors, vesa.
 {
 	asm {
 		push ax
@@ -344,6 +363,7 @@ void vesa_640_480_256 () // inizializza grafica a 640x480x256 colori, vesa.
 }
 
 void _640_480_16 () // inizializza grafica a 640x480x16 colori.
+//initializes graphics 640x480x16 colors.
 {
 	asm {
 		push ax
@@ -361,6 +381,7 @@ long 	      VRAM_total = 65536;
 long	      VRAM_pages = 1;
 
 char video_page_select (char videopage) // Seleziona la pagina indicata.
+//Select the page indicated.
 {
 	asm {   mov dl, videopage
 		mov ax, 0x4f05
@@ -508,6 +529,7 @@ endfr:	asm {	pop	ds
 }*/
 
 void _80_25_C () // modo grafico 80x25 testo a colori.
+//graphically 80x25 color text.
 {
 	asm {
 		push ax
@@ -517,7 +539,9 @@ void _80_25_C () // modo grafico 80x25 testo a colori.
 	}
 }
 
-int attendi_pressione_tasto () // aspetta un tasto e dç qual'ä.
+int attendi_pressione_tasto () // aspetta un tasto e d¬ç qual'¬ä.
+//wait for keypress()
+//expects a key and d? what '?.
 {
 	unsigned char ritorno;
 
@@ -532,7 +556,9 @@ int attendi_pressione_tasto () // aspetta un tasto e dç qual'ä.
 	return (ritorno);
 }
 
-int tasto_premuto () // torna 1 se c'ä un tasto premuto da estrarre.
+int tasto_premuto () // torna 1 se c'¬ä un tasto premuto da estrarre.
+//key pressed()
+//returns 1 if c '? a key is pressed to extract.
 {
 	asm {
 		push ax
@@ -550,6 +576,9 @@ int tasto_premuto () // torna 1 se c'ä un tasto premuto da estrarre.
 }
 
 void cancella_video_grafico (unsigned char colore_da_usare) // Chiaro, no?
+//delete video graphic()
+// char color to be used
+//Clear, no?
 {
 	asm {
 		push es
@@ -573,6 +602,7 @@ void cancella_video_grafico (unsigned char colore_da_usare) // Chiaro, no?
 }
 
 void muovi_cursore (unsigned char col, unsigned char riga)
+//move cursor()
 {
 	asm {
 		push bx
@@ -590,7 +620,9 @@ void muovi_cursore (unsigned char col, unsigned char riga)
 }
 
 char temptesto[256];
+//temp text[]
 void messaggio (char *testo)
+//message()
 {
 	int c;
 	for (c=0; c<256; c++) {
@@ -682,6 +714,14 @@ unsigned char tmppal[1024];
 void tavola_colori (unsigned char *nuova_tavolozza,
 		    unsigned colore_di_partenza, unsigned nr_colori,
 		    char filtro_rosso, char filtro_verde, char filtro_blu)
+//color tables()
+// unsigned char new palette
+// unsigned starting color
+// unsigned no color
+// char red filter
+// char green filter
+// char blue filter
+
 {
 	int c, cc = 0;
 	unsigned temp;
@@ -745,6 +785,7 @@ dzap:	asm {
 }
 
 void termina_exe ()
+//exe ends
 {
 	asm {
 		mov ah, 0x4C
@@ -753,6 +794,7 @@ void termina_exe ()
 }
 
 int lstri (char *stri) // misura una stringa e la copia su temptesto.
+// measure a string and copy temptesto.
 {
 	int c;
 
@@ -774,13 +816,27 @@ int lstri (char *stri) // misura una stringa e la copia su temptesto.
 	mpul  = pulsanti premuti
 		(0 = nessuno, 1 = sinistro, 2 = destro, 3 = entrambi)
 		(mpul dev'essere azzerata prima di chiamare "mouse_input"
-		se ä necessario che la variabile non "ricordi" l'ultima
-		lettura del mouse, perchÇ a volte questo fatto serve)
-	mx;my = posizione attuale del cursore: di per sÇ non ha limiti
+		se ¬ä necessario che la variabile non "ricordi" l'ultima
+		lettura del mouse, perch¬Ç a volte questo fatto serve)
+	mx;my = posizione attuale del cursore: di per s¬Ç non ha limiti
 		e per cui, se la si vuole limitare, lo si deve fare
-		dal programma principale. ä espressa in mickeys.
+		dal programma principale. ¬ä espressa in mickeys.
 		(mx, my, mdltx ed mdlty possono anche assumere valori
 		negativi, e sono dichiarate come interi a 16 bit) */
+
+/* Reading the mouse and return in the specified variable.
+	mdltx = delta-x (in mikeys)
+	mdlty = delta-y (in mikeys)
+	mpul = button presses
+		(0 = none, 1 = left, 2 = right, 3 = both)
+		(mpul must be cleared before calling "mouse_input"
+		if? necessary that the variable does not "remember" the last
+		reading of the mouse, why? sometimes this is done)
+mx, my = current cursor position is: in s? has no limits
+		and so, if you want to limit, it must be done
+		the main program. ?? expressed in mickeys.
+		(mx, my, and mdltx mdlty can also take values
+		negative, and are declared as 16-bit) */
 
 int mdltx = 0, mdlty = 0, mx = 0, my = 0, mpul = 0;
 
@@ -818,6 +874,9 @@ non_imp:asm {
 // Verifica della presenza del mouse (o del supporto per esso).
 // Ed inizializzazione del driver (svuotamento del buffer dei movimenti).
 
+// Check the presence of the mouse (or support for it).
+// And initialization of the driver (buffer underrun movements).
+
 char test_and_init_mouse ()
 {
 	asm {
@@ -842,7 +901,7 @@ ok:	asm {
 }
 
 // Accensione/variazione del bleeper.
-
+// Power on / change the bleeper.
 unsigned ufrq;
 
 void snd (unsigned frq)
@@ -878,6 +937,7 @@ neq:    asm {
 }
 
 // Spegnimento del bleeper.
+// Turning off the bleeper.
 
 void nsnd ()
 {
@@ -891,6 +951,8 @@ void nsnd ()
 }
 
 // Ultraveloce copia di pagina grafica.
+// Ultra-page copy graphics.
+// Ultra fast page copy graphics.
 
 void pcopy (unsigned char far *dest, unsigned char far *sorg)
 {
@@ -909,7 +971,7 @@ void pcopy (unsigned char far *dest, unsigned char far *sorg)
 }
 
 // Copia reciproca (scambia due pagine).
-
+// Copy to each other (exchange two pages).
 void pswap (unsigned char far *dest, unsigned char far *sorg)
 {
 	asm {	push ds
@@ -933,6 +995,11 @@ swap:	asm {	db 0x66; mov ax, [si]
 // Esegue tutti i clipping necessari per l'MCGA.
 // O si specificano X2 ed Y2, o si specificano L ed H:
 // in ogni modo, i valori non usati vanno lasciati a zero.
+
+// Copy a rectangular area.
+// Execute all clipping required for MCGA.
+// Or specify X2 and Y2, or specify L and H:
+// In any way, the values ‚Äã‚Äãare not used they should be left at zero.
 
 void areacopy (unsigned char far *dest, unsigned char far *sorg,
 	       int x, int y, int x2, int y2, int l, int h)
@@ -989,6 +1056,8 @@ ac_endl:  asm { pop di
 }
 
 // Ultraveloce cancella pagina grafica.
+// Ultra clear graphics page.
+// Ultra fast deletes page graphics.
 
 void pclear (unsigned char far *target, unsigned char pattern)
 {
@@ -1021,6 +1090,11 @@ void pclear (unsigned char far *target, unsigned char pattern)
 // Esegue tutti i clipping necessari per l'MCGA.
 // O si specificano X2 ed Y2, o si specificano L ed H:
 // in ogni modo, i valori non usati vanno lasciati a zero.
+
+// Clear a rectangular area.
+// Execute all clipping required for MCGA.
+// Or specify X2 and Y2, or specify L and H:
+// In any way, the values ‚Äã‚Äãare not used they should be left at zero.
 
 void areaclear (unsigned char far *dest, int x, int y,
 		int x2, int y2, int l, int h, unsigned char pattern)
@@ -1083,18 +1157,37 @@ ac_endl:  asm { pop di
 	Occhio al trucco: normalmente ci sarebbero 16 addizioni e una
 	divisione (per 16) da fare, per ogni punto.
 	Col trucco, invece, bastano quattro addizioni a 32 bit,
-	altre quattro a 8 bit, pió un paio di shifts ed un and logico su edx.
+	altre quattro a 8 bit, pi¬ó un paio di shifts ed un and logico su edx.
 
 	Normale: 16 + 42 = 58 cicli.
 	Truccato: 8 + 4 = 12 cicli.
 
 	Piuttosto ovvio: la tavola dei colori dev'essere una sfumatura unica
 	e compatta, da far rientrare nei primi 64 registri del video DAC;
-	il colore zero ä il pió tenue, il 63 quello pió brillante.
+	il colore zero ¬ä il pi¬ó tenue, il 63 quello pi¬ó brillante.
 
-	Nota: la procedura puï essere reiterata per ottenere
+	Nota: la procedura pu¬ï essere reiterata per ottenere
 	      una maggiore attenuazione.
 
+*/
+
+/*
+Another gem: it blunts the screen, reducing the contrast of
+edges with a procedure average of 4 x 4 pixels.
+Eye makeup: normally there would be 16 additions and
+division (for 16) to make, for each point.
+Col trick, instead, just four additions to 32 bits,
+four other 8-bit, more? a couple of shifts and a bitwise of edx.
+
+Normal: 16 + 42 = 58 cycles.
+Rigged: 8 + 4 = 12 cycles.
+
+Pretty obvious: the color table must be a gradient only
+and compact, to include in the first 64 registers of the video DAC;
+the color zero? the most? small intestine, more than 63? brilliant.
+
+Note: The procedure can? be repeated to obtain
+a greater attenuation.
 */
 
 void psmooth_grays (unsigned char far *target)
@@ -1135,21 +1228,21 @@ smooth: asm {	db 0x66; mov dx, es:[di-320]
 /*
 
 	Versione a colori della precedente: 64 livelli in 4 sfumature.
-	I primi 2 bits (pió significativi) di ogni punto video selezionano
-	il colore da usare, mentre gli altri 6 l'intensitÖ della tinta.
-	Puï essere anche usata con la sfumatura dei primi 64 colori
-	come "psmooth_grays", ma in genere ä pió leggera di quest'ultima,
-	in quanto la media ä applicata su cella 2 x 2.
-	Ah, non si puï fare su adaptor, cosç com'ä: il segmento deve avere
+	I primi 2 bits (pi¬ó significativi) di ogni punto video selezionano
+	il colore da usare, mentre gli altri 6 l'intensit¬Ö della tinta.
+	Pu¬ï essere anche usata con la sfumatura dei primi 64 colori
+	come "psmooth_grays", ma in genere ¬ä pi¬ó leggera di quest'ultima,
+	in quanto la media ¬ä applicata su cella 2 x 2.
+	Ah, non si pu¬ï fare su adaptor, cos¬ç com'¬ä: il segmento deve avere
 	offset pari a 4, come quelli di tipo far o huge allocati dal c.
 
-	Il segshift serve per spostare di qualche paragrafo pió avanti la
+	Il segshift serve per spostare di qualche paragrafo pi¬ó avanti la
 	zona su cui operare, ed assieme alla normale variabile QUADWORDS
-	puï definire con precisione l'area ove operare.
+	pu¬ï definire con precisione l'area ove operare.
 
-	Una cosa interessante: per aumentare la velocitÖ ho fatto il ciclo
+	Una cosa interessante: per aumentare la velocit¬Ö ho fatto il ciclo
 	al contrario, ma mi sono dimenticato di correggere l'eleborazione
-	della media. Se si vuole correggere perchÇ sia normale, basta
+	della media. Se si vuole correggere perch¬Ç sia normale, basta
 	aumentare incondizionatamente il segshift nella prima parte della
 	funzione con l'istruzione "add segshift, 20" e poi mettere al posto
 	dell'istruzione:
@@ -1160,10 +1253,42 @@ smooth: asm {	db 0x66; mov dx, es:[di-320]
 
 		mov bx, [di-324].
 
-	PerchÇ non l'ho fatto? PerchÇ cosç due punti su quattro, per ogni
+	Perch¬Ç non l'ho fatto? Perch¬Ç cos¬ç due punti su quattro, per ogni
 	ciclo, subiscono una doppia media (1 x 2 + 2 x 2), lasciando un
 	suggestivo "effetto aura".
 
+*/
+
+/*
+Color version of the above: 64 levels in 4 shades.
+The first 2 bits (pi? Significant) of each point selected video
+the color to be used, while the other 6 the intensity? the color.
+Pu? also be used with the gradient of the first 64 colors
+as "psmooth_grays", but in general? more? Light of the latter,
+since the average? applied on cell 2 x 2.
+Ah, you can not? do on adapter, so? com '?: the segment must have
+offset of 4, such as the type to huge or allocated by c.
+
+The segshift need to move more than a few paragraphs? forward
+area on which to operate, and with normal variable QUADWORDS
+can? accurately define the area in which to operate.
+
+One interesting thing: to increase the speed? I did the cycle
+on the contrary, but I forgot to correct the elaboration
+average. If you want to correct why? is normal, just
+increase unconditionally segshift the first part of
+function with the instruction "add segshift, 20" and then put in place
+education:
+
+mov bx, [to +324]
+
+this one:
+
+mov bx, [by-324].
+
+Why? I did not? Why? so? two points on four, for each
+cycle, undergo a double Average (1 x 2 + 2 x 2), leaving a
+suggestive "aura effect".
 */
 
 void psmooth_64levels (unsigned char far *target, unsigned segshift)
@@ -1196,6 +1321,7 @@ smooth: asm {   mov bx, [di+324]
 }
 
 // Versione normale della precedente: a volte serve liscia.
+// Normal version of the above: you need to actually smooth.
 
 void forward_psmooth_64levels (unsigned char far *target, unsigned segshift)
 {
@@ -1290,6 +1416,7 @@ mloop:  asm {	db 0x66; and word ptr [di], ax
 }
 
 // Indirizzo del psp.
+// Address psp.
 
 unsigned char far *pspa;
 
@@ -1313,30 +1440,54 @@ unsigned char far *psp ()
 }
 
 /* Ritorna lo stato completo della tastiera: tasto in ingresso, esteso o
-   normale (ingresso anche asincrono), pió il byte di stato per i tasti
+   normale (ingresso anche asincrono), pi¬ó il byte di stato per i tasti
    di controllo dislocato a ctrlkeys[0].
    La funzione azzera anche qualsiasi altro tentativo d'intercettare i tasti,
-   perchÇ svuota il buffer di tastiera.
-   Lo scancode hardware tradotto ä relativo al tasto che SI STA PREMENDO.
-   Tuttavia, questa funzione non permette di eliminare l'ottusitÖ nel bios
+   perch¬Ç svuota il buffer di tastiera.
+   Lo scancode hardware tradotto ¬ä relativo al tasto che SI STA PREMENDO.
+   Tuttavia, questa funzione non permette di eliminare l'ottusit¬Ö nel bios
    di non consentire la ripresa dei tasti quando non sono rilasciati:
    ad esempio, se si preme left cr e, tenendolo premuto, si preme up cr,
-   si otterrÖ immediatamente la registrazione del tasto up cr ma, quando si
-   rilascierÖ solo up cr, non si potrÖ ottenere di nuovo la registrazione
-   della pressione di left cr se prima non si rilascerÖ anche questo.
+   si otterr¬Ö immediatamente la registrazione del tasto up cr ma, quando si
+   rilascier¬Ö solo up cr, non si potr¬Ö ottenere di nuovo la registrazione
+   della pressione di left cr se prima non si rilascer¬Ö anche questo.
    Se, per esempio ad un platform, serve anche la ripresa di questi tasti,
-   si dovrÖ intercettare l'int 9 generata dal microprocessorino della
+   si dovr¬Ö intercettare l'int 9 generata dal microprocessorino della
    tastiera, ovvero l'i8084, per rimpiazzare l'interrupt bios che infila
    i tasti nel buffer di tastiera. Purtroppo, questo comporta che il bios
-   non tradurrÖ gli scancode hardware, che continueranno ad esser tali
-   e dovranno essere opportunamente interpretati (non saranno pió gli ascii
+   non tradurr¬Ö gli scancode hardware, che continueranno ad esser tali
+   e dovranno essere opportunamente interpretati (non saranno pi¬ó gli ascii
    normali o estesi, in soldoni). Di questo, comunque, si occupano le
    funzioni seguenti a questa. */
+
+/*
+Returns the complete state of the keyboard key input, extended, or
+normal (input also asynchronous) pi? the status byte for the keys
+control displaced to ctrlkeys [0].
+The function also clears any attempt to intercept the keys,
+why? clears the keyboard buffer.
+The hardware scancode translated? relative to the button that you press.
+However, this function does not remove the ottusit? in bios
+not to allow the resumption of keys when they are released:
+For example, if you press left and cr, holding it down, press up cr
+you will get? immediately the registration button up cr but when
+rilascier?? only up cr, not potr?? get back the recording
+pressure cr left before they will release it? that too.
+If, for example, to a platform, also serves the recovery of these keys,
+you will have? intercept the int 9 generated by the microprocessorino
+keyboard, or the i8084, to replace the bios interrupt that puts
+keys in the keyboard buffer. Unfortunately, this implies that the bios
+not tradurr?? the hardware scancode, which will continue to be such
+and must be appropriately interpreted (will not be pi?'s ascii
+normal or extended, in a nutshell). This, however, deal with the
+following functions to this.
+*/
 
 unsigned char scancode = 0, extended_scancode = 0, status_byte = 0;
 unsigned char hardware_scancode = 0;
 
 void stato_tastiera ()
+//keyboard status()
 {
 	scancode = 0;
 	extended_scancode = 0;
@@ -1370,8 +1521,8 @@ void stato_tastiera ()
 	}
 }
 
-// Non ä una funzione: non chiamare, ä solo un buffer sul segmento di codice.
-
+// Non ¬ä una funzione: non chiamare, ¬ä solo un buffer sul segmento di codice.
+// Not? a function: do not call,? only a buffer on the code segment.
 void key_status_marker ()
 {
 	asm {
@@ -1443,6 +1594,7 @@ void key_status_marker ()
 };
 
 // Viene sostituita alla normale ruotine d'intercettazione dei tasti.
+// Replaced the normal wheels-off of the keys.
 
 void int9_control ()
 {
@@ -1488,6 +1640,7 @@ unsigned int9_segment;
 unsigned int9_offset;
 
 // chiamare con CATCH per inziare il controllo, con RELEASE per terminarlo.
+// call to CATCH it, then start checking with RELEASE to finish.
 
 void int9_manager (char work)
 {
@@ -1531,7 +1684,8 @@ release:asm {
 _ret:
 }
 
-// Indica se il tasto "SCANCODE" ä attualmente ABBASSATO.
+// Indica se il tasto "SCANCODE" ¬ä attualmente ABBASSATO.
+// Indicates whether the "scancode"? currently DOWN.
 
 char keyhold (unsigned scancode)
 {
@@ -1553,6 +1707,7 @@ char keyhold (unsigned scancode)
 /*
 
 	Attiva o disattiva il ctrl-break via DOS.
+	Enable or disable the ctrl-break via DOS.
 
 */
 
@@ -1568,6 +1723,9 @@ void ctrl_break (char on_off)
 }
 
 void varia_cursore (char prima_scanline, char ultima_scanline)
+//varies cursore()
+// char first scanline
+// char last scanline
 {
 	asm {
 		mov ah, 1
