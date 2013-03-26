@@ -79,7 +79,88 @@
 
 */
 
-#define larghezza 250
+/*
+
+Editor for complex polygon objects.
+----------------------------------------
+Strictly personal, I serve? for various things.
+Programs PolyVert are not jokes, anything but
+toys, require a computer which as a minimum must have
+a Pentium: any speed? clock, also 60, but a Pentium.
+This is because? any level of detail is based on the number of
+polygons used: no surface detail or special effects
+mixing of pixels, all healthy polygons independent
+as I like.
+
+List mouse commands:
+
+Moving the mouse: change angle.
+Left Click + Shift: Change coords. x / y origin.
+Shift + Right Click: away / close the object.
+
+List of keyboard commands:
+
+Cursor: Moves the cursor 3d of x / y.
+Ctrl + croup, CrDown: Increase / decrease grid spacing.
+Page Up / Dn.: Moves the cursor 3d z.
+Ctrl + Page Up / Dn.: Move the origin to z.
+Spacebar: fixed a vertex.
+Backspace: Deletes a vertex or a polygon.
+Enter: fixed a polygon.
++: Increases intensity? of color.
+-: Decreases. intensity? color.
+c: reduces color contrast.
+C: increases contrast colors.
+l reduces brightness? colors.
+L: increases brightness? colors.
+Shift + Enter: save the object to the file "POLYVERT.NCC."
+Backslash: Moves the cursor to the most? close
+d? also the possibility?? to move all
+the top of it overlapped with the
+move the cursor.
+p: port in the foreground the selected polygon,
+or bottom of the list (it is designed to last).
+b: port in the background polygon,
+or at the top (is drawn first).
+t: brings all the polygons with three vertices, adding the
+that serve to divide those vertices to 4;
+?? useful to approximate forms "bent" to 4 vertices,
+then be able to make the code draw 3d properly
+in the form of two polygons to 3 vertices.
+s: select the polygon pi? next to the cursor,
+and highlights it in yellow: from now on, you potr?
+jointly move the cursor.
+if a polygon?? selected, deselects it.
+dot (.) leads to the cursor color of the polygon
+selected.
+colon (:): switches to the selected polygon color
+of the cursor.
+h: unclear what it's for.
+I? was useful to bring an object studied
+a certain point from the origin 0, 0, 0 to the point where it
+the cursor was, why? served, but if you
+I repeat, of course, I will answer crx, cry, crz
+unit? measurement.
+or: Set the origin (as a reference in
+rotation of convenience?? object) on the cursor.
+q: Quit the program (quit). first save!
+
+Description of the format NCC:
+
+The acronym stands for the top number, coordinates, color.
+File structure:
+
+Start-> 2 bytes: n = number of polygons that? made the OGG.
+n bytes: nr. vertices for each polygon.
+16 * n: x-coordinate of each vertex. max. 4 vertices.
+16 * n: y (16 * n = 4 vertices * 4 bytes * n).
+16 * n: z.
+n bytes: intensity? color of each polygon (1 to 62).
+Fine-> Eof.
+
+*/
+
+#define larghezza 250 //width
 
 #include <assembly.h>
 #include <tdpolygs.h>
@@ -123,7 +204,7 @@ void main ()
 
 	initscanlines ();
 
-	tavola_colori (range8088,   0, 64,  0, 63,  0);
+	tavola_colori (range8088,   0, 64,  0, 63,  0); //color table
 	tavola_colori (range8088,  64, 64, 63,  0,  0);
 	tavola_colori (range8088, 128, 64, 63, 63,  0);
 	tavola_colori (range8088, 192, 64,  8, 16, 63);
@@ -192,11 +273,11 @@ void main ()
 		vx[1] = crx+10; vy[1] = cry+8; vz[1] = crz-10;
 		vx[2] = crx+4; vy[2] = cry+14; vz[2] = crz-4;
 		poly3d (vx, vy, vz, 3, 64+ink);
-		if (tasto_premuto()) {
+		if (tasto_premuto()) { // key pressed
 			pcrx = crx;
 			pcry = cry;
 			pcrz = crz;
-			i = attendi_pressione_tasto();
+			i = attendi_pressione_tasto(); // wait for keypress
 			if (i==0) {
 				i = attendi_pressione_tasto();
 				switch (i) {
@@ -266,6 +347,13 @@ void main ()
 										   // mah. un'ora ci ho perso a cercare un errore.
 										   // un errore che non c'Š.
 										   // dio tribudellone.
+										   
+										   // boh? but you know that does not want to work
+										   // if not initialize, the coprocessor?
+										   // that there remained some flag altered?
+										   // mah. I've lost an hour to find an error.
+										   // an error that c '?.
+										   // tribudellone god.
 									x[4*c+p] = x[4*(c+1)+p];
 									y[4*c+p] = y[4*(c+1)+p];
 									z[4*c+p] = z[4*(c+1)+p];
@@ -494,7 +582,7 @@ void main ()
 			}
 		}
 		sprintf (temptesto, "CRH %d; %d; %d", (int)crx, (int)cry, (int)crz);
-		Testo (5, 5, temptesto, 127, NORMALE);
+		Testo (5, 5, temptesto, 127, NORMALE); // testo == text
 		sprintf (temptesto, "PLG %d;", psel);
 		Testo (5, 15, temptesto, 127, NORMALE);
 		if (mp>-1) {
@@ -516,7 +604,7 @@ void main ()
 				}
 			}
 		}
-		pcopy (adaptor, adapted);
+		pcopy (adaptor, adapted);  //adapter
 		adaptor[320*my2d + mx2d] = 0;
 	} while (i!='q');
 
